@@ -4,139 +4,26 @@
         <script src="https://code.createjs.com/easeljs-0.8.2.min.js" type="text/javascript"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
+        <script src="js/Quantum.js"></script>
+        <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+        });
+        </script>
+        <script src="js/main.js"></script>
+        <link href="css/main.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <script>
-            function anglePrincipal(angle){
-                while (angle >360) angle-=360;
-                while (angle < 0) angle +=360;
-                return angle;
-            }
-            
-            function newImage(path, stage, addToStage = true) {
-                var newimage = new createjs.Bitmap(path);
-                newimage.image.onload = function(e){ stage.update(); }
-                if (addToStage) stage.addChild(newimage);
-                return newimage;
-            }
-        </script>
-        <script>
-            
-            var mouseisdown = false;
-            var lastMousePos = new createjs.Point(0,0);
-            var lastStateAngle = 0;
-            
-            $(document).ready(function(){
-                var stage = new createjs.Stage("stateSimulation");
-                lastMousePos = new createjs.Point(stage.mouseX, stage.mouseY);
-                
-                createjs.Ticker.addEventListener("tick",stage);
-                
-                var bg = new createjs.Shape(); stage.addChild(bg);
-                bg.graphics.beginStroke("red").drawRect(0, 0, 500, 300).endStroke();
-                var machine = new createjs.Shape();
-                machine.graphics.beginFill("DeepSkyBlue").drawRect(-10, -35, 20, 70).endFill();
-                machine.graphics.beginFill("Red").drawRect(-10, -35, 20, 10).endFill();//change this to an arrow later
-                machine.x = 100;
-                machine.y = 100;
-               
-                
-                var stateDrawing = new createjs.Shape();
-                stateDrawing.graphics.beginFill("black").drawRect(-1,-50,2, 100).endFill();
-                stateDrawing.x = machine.x;
-                stateDrawing.y = machine.y;
-                stage.addChild(stateDrawing);
-                stage.addChild(machine);
-                
-                
-                var stateText = new createjs.Text("state text", "20px Arial", "#ff7700");
-                stateText.x = 100;
-                stateText.y = 30;
-                stage.addChild(stateText);
-                
-                
-                var defaultPlusText = "Probability to measure +1: --";
-                var defaultMinusText = "Probability to measure -1: --";
-                var probPlus = new createjs.Text(defaultPlusText, "20px Arial", "#ff7700");
-                var probMinus = new createjs.Text(defaultMinusText, "20px Arial", "#ff7700");
-                probPlus.x = 50;
-                probPlus.y = 200;
-                stage.addChild(probPlus);
-                probMinus.x = 50;
-                probMinus.y = 250;
-                stage.addChild(probMinus);
-                
-                
-                
-                var measureButton = new createjs.Container(); var measureButtonShape = new createjs.Shape();
-                measureButtonShape.graphics.beginFill("LightGreen").drawRoundRect(0, 0, 120, 35, 5);
-                measureButton.addChild(measureButtonShape);
-                measureButton.x = 300; measureButton.y = 100;
-                measureButton.addChild(new createjs.Text("    Measure", "20px Arial", "grey"));
-                stage.addChild(measureButton);
-                
-                var resultText = new createjs.Text("Result: -", "20px Arial");
-                resultText.x = 300;
-                resultText.y = 150;
-                stage.addChild(resultText);
-                
-                measureButton.addEventListener("click", function(ev){
-                    var result =undefined;
-                    var angleDiff = anglePrincipal(machine.rotation)-anglePrincipal(lastStateAngle);
-                    var prob1 = Math.pow(Math.cos(Math.PI/180*angleDiff/2),2);
-                    if (Math.random() < prob1 ) {
-                        resultText.text = "Result: +"+String(1);
-                        lastStateAngle = anglePrincipal(machine.rotation);
-                        
-                    } else {
-                        resultText.text = "Result: "+String(-1);
-                        lastStateAngle = anglePrincipal(machine.rotation+180);
-                    }
-                    
-                    updateProbabilites();
-                    stage.update();
-                    createjs.Tween.get(stateDrawing).to({rotation:(machine.rotation)}, 500, createjs.Ease.getPowOut(3));
-                });
-                
-                /*var upButton = newImage("up.png", stage);
-                var downButton = newImage("down.png", stage);  downButton.x = 70;
-                var rightButton = newImage("right.png", stage); rightButton.x = 150;
-                var leftButton = newImage("left.png", stage); leftButton.x = 250;*/
-                
-                //stage.addChild(upButton); 
-                
-                function updateProbabilites(){
-                    var angleDiff = anglePrincipal(machine.rotation)-anglePrincipal(lastStateAngle);
-                    var prob1 = Math.pow(Math.cos(Math.PI/180*angleDiff/2),2);
-                    probPlus.text = "Probability to measure +1: "+Math.round(prob1*100).toString()+"%";
-                    probMinus.text = "Probability to measure -1: "+Math.round((1-prob1)*100).toString()+"%";
-                }
-                
-                stage.addEventListener("stagemousedown", function(ev){
-                    mouseisdown = true;
-                });
-                stage.addEventListener("stagemouseup", function(ev){
-                    mouseisdown = false;
-                });
-                
-                stage.addEventListener("stagemousemove", function (ev){
-                    if (mouseisdown && stage.mouseY>200) {
-                        machine.rotation += 0.7*(stage.mouseX-lastMousePos.x);
-                        updateProbabilites();
-                    }
-                    
-                    lastMousePos.x = stage.mouseX; lastMousePos.y = stage.mouseY;
-                    
-                    stage.update();
-                });
-                
-                
-                
-                
-                stage.update();
-            });
-        </script>
-        
-        <canvas id="stateSimulation" width="500" height="300"></canvas>
+      <div id="physical-section">
+        <canvas id="stateSimulation" width="500" height="500"></canvas>
+        <div style="vertical-align:top;">
+          <button id="measure-btn">Measure</button>
+        </div>
+
+      </div>
+      <div id="math-section">
+        State: <span id="spin-state"></span>
+      </div>
     </body>
 </html>

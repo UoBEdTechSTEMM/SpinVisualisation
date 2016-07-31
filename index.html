@@ -6,10 +6,17 @@
         <script src="https://code.createjs.com/tweenjs-0.6.2.min.js"></script>
         <script src="js/Quantum.js"></script>
         <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+        <script async src="js/external/forminput.js"></script>
         <script type="text/x-mathjax-config">
-        MathJax.Hub.Config({
-          tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-        });
+          MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+          });
+           /*MathJax.Hub.Config({
+             extensions: ["tex2jax.js","[Contrib]/forminput.js"],
+             jax: ["input/TeX","output/HTML-CSS"],
+             tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
+             TeX: {extensions: ["AMSmath.js","AMSsymbols.js"]}
+           });*/
         </script>
         <script src="js/main.js"></script>
         <link href="css/main.css" type="text/css" rel="stylesheet">
@@ -18,12 +25,20 @@
       <div id="physical-section">
         <canvas id="stateSimulation" width="500" height="500"></canvas>
         <div style="vertical-align:top;">
-          <button id="measure-btn">Measure</button>
+          <button id="measure-btn">Measure spin with machine</button>
         </div>
 
       </div>
       <div id="math-section">
-        State: <span id="spin-state"></span>
+        <span id="spin-state"></span><br>
+        <div id="spin-operator">
+          \[ \sigma =
+            \begin{bmatrix}
+              \FormInput[1][operatorElement][-]{}&2\\
+              4&5
+            \end{bmatrix}
+          \]
+        </div>
       </div>
     </body>
 </html>

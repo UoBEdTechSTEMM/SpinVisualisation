@@ -16,13 +16,17 @@ function roundTo(num,to) {
 }
 
 function updateStateKet(angle) {
+  angle = anglePrincipal(angle);
+  var degrees = angle;
   angle = angle*Math.PI/180;
   var latex = '$|\\text{spin state}\\rangle =';
-  angle = anglePrincipal(angle);
-  latex += String(roundTo(Math.pow(Math.cos(angle/2),2),2));
+
+  latex += "\\cos(\\frac{"+String(roundTo(degrees,2))+"^o}{2}) |u\\rangle";
+  latex += "+\\sin(\\frac{"+String(roundTo(degrees,2))+"^o}{2}) |d\\rangle =";
+  latex += String(roundTo(Math.cos(angle/2),2));
   latex += '|u\\rangle';
-  var downCoeff = roundTo(Math.pow(Math.sin(angle/2),2),2);
-  latex += (downCoeff>=0 ?"+":"-");
+  var downCoeff = roundTo(Math.sin(angle/2),2);
+  latex += (downCoeff>=0 ?"+":"");
   latex += String(downCoeff);
   latex += '|d\\rangle';
   angle = roundTo(angle,2);
